@@ -80,33 +80,20 @@ const menu = [
         desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
     },
 ];
-const sectionCenter =document.querySelector(".section-center");
-const filterBtn = document.querySelectorAll(".filter-btn");
+const sectionCenter = document.querySelector(".section-center");
+const container = document.querySelector(".btn-container")
 // on load
-window.addEventListener("DOMContentLoaded",function(){
+window.addEventListener("DOMContentLoaded", function () {
     displaymenuItem(menu)
+    displayMenuButtons()
+
 })
 // on filter
-filterBtn.forEach(function(btn){
-    btn.addEventListener("click",function(e){
-        const category=e.currentTarget.dataset.id;
-        const menuCategory =menu.filter(function(menuItem){
-            if(menuItem.category===category){
-                return menuItem
-            }
-        })
-        if(category==="all"){
-            displaymenuItem(menuItem)
-        }else{
-            displaymenuItem(menuCategory)
-        }
-    })
-})
 
 
-function displaymenuItem(menuItem){
-    let displayMenu =menuItem.map(function(item){
-        return  `<article class="menu-item">
+function displaymenuItem(menuItem) {
+    let displayMenu = menuItem.map(function (item) {
+        return `<article class="menu-item">
         <img src="${item.img}"alt="${item.title}" class="photo" />
         <div class="item-info">
           <header>
@@ -119,7 +106,39 @@ function displaymenuItem(menuItem){
         </div>
       </article>`
     })
-    displayMenu=displayMenu.join("")
-    sectionCenter.innerHTML=displayMenu;
+    displayMenu = displayMenu.join("")
+    sectionCenter.innerHTML = displayMenu;
+
+}
+function displayMenuButtons (){
+    const categories = menu.reduce(function (values, item) {
+        if (!values.includes(item.category)) {
+            values.push(item.category)
+        }
+        return values
+    }, ["all"])
+    const categoryBtn = categories.map(function (category) {
+        return `<button type="button" class="filter-btn" data-id=${category}>
+    ${category}
+  </button>`
+    }).join("")
+    container.innerHTML = categoryBtn;
+    const filterBtn = document.querySelectorAll(".filter-btn");
+    filterBtn.forEach(function (btn) {
+        btn.addEventListener("click", function (e) {
+            const category = e.currentTarget.dataset.id;
+            const menuCategory = menu.filter(function (menuItem) {
+                if (menuItem.category === category) {
+                    return menuItem
+                }
+            })
+            if (category === "all") {
+                displaymenuItem(menu)
+            } else {
+                displaymenuItem(menuCategory)
+            }
+        })
+    })
     
+
 }
