@@ -68,7 +68,7 @@ const menu = [
         title: "quarantine buddy",
         category: "shakes",
         price: 16.99,
-        img: "./images/item-10.jpeg",
+        img: "./images/item-6.jpeg",
         desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
     },
     {
@@ -81,9 +81,29 @@ const menu = [
     },
 ];
 const sectionCenter =document.querySelector(".section-center");
+const filterBtn = document.querySelectorAll(".filter-btn");
+// on load
 window.addEventListener("DOMContentLoaded",function(){
     displaymenuItem(menu)
 })
+// on filter
+filterBtn.forEach(function(btn){
+    btn.addEventListener("click",function(e){
+        const category=e.currentTarget.dataset.id;
+        const menuCategory =menu.filter(function(menuItem){
+            if(menuItem.category===category){
+                return menuItem
+            }
+        })
+        if(category==="all"){
+            displaymenuItem(menuItem)
+        }else{
+            displaymenuItem(menuCategory)
+        }
+    })
+})
+
+
 function displaymenuItem(menuItem){
     let displayMenu =menuItem.map(function(item){
         return  `<article class="menu-item">
@@ -91,7 +111,7 @@ function displaymenuItem(menuItem){
         <div class="item-info">
           <header>
             <h4>${item.title}</h4>
-            <h4 class="price">${item.price}</h4>
+            <h4 class="price">$${item.price}</h4>
           </header>
           <p class="item-text">
           ${item.desc}
@@ -100,5 +120,6 @@ function displaymenuItem(menuItem){
       </article>`
     })
     displayMenu=displayMenu.join("")
-    sectionCenter.innerHTML=displayMenu
+    sectionCenter.innerHTML=displayMenu;
+    
 }
